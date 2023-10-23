@@ -36,7 +36,6 @@ class TestInterpreter:
     def test_add_with_letter(self, interpreter):
         with pytest.raises(Exception):
             interpreter.eval("2+a")
-            interpreter.eval("t+2")
 
     def test_wrong_operator(self, interpreter):
         with pytest.raises(SyntaxError):
