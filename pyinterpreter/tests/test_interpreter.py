@@ -21,6 +21,9 @@ class TestInterpreter:
     def test_div(self, interpreter):
         assert interpreter.eval("4/7") == 4/7
 
+    def test_precedence(self, interpreter):
+        assert interpreter.eval("2+2*2*2") == 2+2*2*2
+
     def test_neg(self, interpreter):
         assert interpreter.eval("---2") == ---2
 

@@ -35,7 +35,7 @@ class Parser:
                 break
             token = self._current_token
             self.check_token(TokenType.OPERATOR)
-            return BinOp(result, token, self.factor())            
+            result = BinOp(result, token, self.factor())            
         return result
 
     def expr(self):
