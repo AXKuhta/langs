@@ -1,10 +1,11 @@
 from interpreter.parser import Parser
+from interpreter import Interpreter
 
 parser = Parser()
 program = """
 BEGIN
 	a = 5 + 5;
-	b = 1 + b
+	b = 1 + a
 	;;;;;;;;;;;;;;
 	b = b + 5;
 	BEGIN
@@ -13,6 +14,9 @@ BEGIN
 END.
 """.strip()
 
-print(
-	parser.parse(program)
-)
+# print(
+# 	parser.parse(program)
+# )
+
+interp = Interpreter()
+print(interp.eval(program))
