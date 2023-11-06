@@ -9,6 +9,7 @@ class TokenType(Enum):
     RPAREN = auto()
     IDENTIFIER = auto()
     KEYWORD = auto()
+    ASSIGN = auto()
     SEMI = auto()
     DOT = auto()
 

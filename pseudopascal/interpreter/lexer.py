@@ -68,6 +68,9 @@ class Lexer():
                     return Token(TokenType.KEYWORD, word)
                 else:
                     return Token(TokenType.IDENTIFIER, word)
+            if self._current_char == "=":
+                self.forward()
+                return Token(TokenType.ASSIGN, "=")
             if self._current_char == ";":
                 self.forward()
                 return Token(TokenType.SEMI, ";")
