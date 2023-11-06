@@ -70,6 +70,9 @@ class Parser:
             print("Empty statement")
             return
 
+        if self.seeing(TokenType.KEYWORD, "BEGIN"):
+            return self.complex_statement()
+
         return self.assignment()
 
     def statement_list(self):
