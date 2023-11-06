@@ -72,4 +72,4 @@ class Interpreter(NodeVisitor):
     def eval(self, code):
         tree = self.parser.parse(code)
         self.visit(tree)
-        return self.variables
+        return tree
