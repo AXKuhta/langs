@@ -80,16 +80,18 @@ class Parser:
             stmt = self.statement()
             result.append(stmt)
 
-        print(result)
+        return StatementList(result)
 
     def complex_statement(self):
         self.check_token(TokenType.KEYWORD)
-        self.statement_list()
+        result = self.statement_list()
         self.check_token(TokenType.KEYWORD)
+        return result
 
     def program(self):
-        self.complex_statement()
+        result = self.complex_statement()
         self.check_token(TokenType.DOT)
+        return result
 
     def parse(self, code):
         self._lexer.init(code)

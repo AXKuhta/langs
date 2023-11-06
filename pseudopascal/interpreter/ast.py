@@ -28,6 +28,13 @@ class Assignment(Node):
     def __str__(self):
         return f"Assignment({self.lhs}, {self.rhs})"
 
+class StatementList(Node):
+    def __init__(self, stmts:list):
+        self.stmts = stmts 
+
+    def __str__(self):
+        return f"StatementList({self.stmts})"
+
 class UnOp(Node):
     def __init__(self, op: Token, right: Node):
         self.op = op

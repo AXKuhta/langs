@@ -9,4 +9,6 @@ BEGIN
 END.
 """.strip()
 
-parser.parse(program)
+print(
+	parser.parse(program)
+)
