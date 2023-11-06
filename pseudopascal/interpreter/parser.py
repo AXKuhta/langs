@@ -52,8 +52,9 @@ class Parser:
     def expr(self):
         result = self.term()
         while self.seeing(TokenType.OPERATOR):
-            if self._current_token.value not in ["+", "-"]:
-                break
+            # This check is unreachable as long as we only have ["+", "-", "/", "*"] in the lexer
+            # if self._current_token.value not in ["+", "-"]:
+            #    break
             token = self._current_token
             self.check_token(TokenType.OPERATOR)
             result = BinOp(result, token, self.term())          
