@@ -1,6 +1,6 @@
 from .token import Token, TokenType
 from .lexer import Lexer
-from .ast import UnOp, BinOp, Number
+from .ast import *
 
 class Parser:
     def __init__(self):
@@ -26,6 +26,9 @@ class Parser:
         if token.type_ == TokenType.NUMBER:
             self.check_token(TokenType.NUMBER)
             return Number(token)
+        if token.type_ == TokenType.IDENTIFIER:
+            self.check_token(TokenType.IDENTIFIER)
+            return Variable(token)
         if token.type_ == TokenType.LPAREN:
             self.check_token(TokenType.LPAREN)
             result = self.expr()
