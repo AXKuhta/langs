@@ -42,6 +42,11 @@ class Lexer():
 
         return "".join(result)
 
+    def assign(self):
+        self.forward()
+        assert self._current_char == "="
+        self.forward()
+
     def next(self):
         while self._current_char:
             if self._current_char.isspace():
@@ -68,9 +73,8 @@ class Lexer():
                     return Token(TokenType.KEYWORD, word)
                 else:
                     return Token(TokenType.IDENTIFIER, word)
-            if self._current_char == "=":
-                self.forward()
-                return Token(TokenType.ASSIGN, "=")
+            if self._current_char == ":":
+                return Token(TokenType.ASSIGN, self.assign())
             if self._current_char == ";":
                 self.forward()
                 return Token(TokenType.SEMI, ";")
