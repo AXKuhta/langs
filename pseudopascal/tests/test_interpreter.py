@@ -94,7 +94,8 @@ class TestInterpreter:
                     END.
                     """.strip()
 
-        print( interpreter.eval(program) )
+        interpreter.eval(program)
+        print(interpreter.tree)
 
     def test_whole_program(self, interpreter):
         program =   """
@@ -141,3 +142,7 @@ class TestInterpreter:
     def test_invalid_token_order(self, interpreter):
         with pytest.raises(SyntaxError):
             interpreter.eval("BEGIN\nBEGIN\nEND.")
+
+    def test_malformed_assignment(self, interpreter):
+        with pytest.raises(SyntaxError):
+            interpreter.eval("BEGIN\nx : = 3\nEND.")

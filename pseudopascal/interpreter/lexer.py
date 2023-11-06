@@ -44,7 +44,8 @@ class Lexer():
 
     def assign(self):
         self.forward()
-        assert self._current_char == "="
+        if self._current_char != "=":
+            raise SyntaxError("Malformed :=")
         self.forward()
 
     def next(self):

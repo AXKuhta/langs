@@ -60,6 +60,6 @@ class Interpreter():
         return self.variables[identifier]
 
     def eval(self, code):
-        tree = self.parser.parse(code)
-        self.visit(tree)
-        return tree
+        self.tree = self.parser.parse(code)
+        self.visit(self.tree)
+        return self.variables
