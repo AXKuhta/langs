@@ -6,6 +6,14 @@ class Parser:
     def __init__(self):
         self._current_token = None
         self._lexer = Lexer()
+
+    def seeing(self, type_, value=None):
+        token = self._current_token
+
+        if value is not None:
+            return token and token.type_ == type_ and token.value == value
+        else:
+            return token and token.type_ == type_
     
     def check_token(self, type_: TokenType):
         if self._current_token.type_ == type_:
@@ -30,7 +38,7 @@ class Parser:
 
     def term(self):
         result = self.factor()
-        while self._current_token and (self._current_token.type_ == TokenType.OPERATOR):
+        while self.seeing(TokenType.OPERATOR):
             if self._current_token.value not in ["*", "/"]:
                 break
             token = self._current_token
@@ -40,7 +48,7 @@ class Parser:
 
     def expr(self):
         result = self.term()
-        while self._current_token and (self._current_token.type_ == TokenType.OPERATOR):
+        while self.seeing(TokenType.OPERATOR):
             if self._current_token.value not in ["+", "-"]:
                 break
             token = self._current_token
@@ -49,16 +57,14 @@ class Parser:
         return result
 
     def statement(self):
-        # Empty
-        if ((self._current_token and (self._current_token.type_ == TokenType.KEYWORD) and (self._current_token.value == "END")) or
-            (self._current_token and (self._current_token.type_ == TokenType.SEMI))):
+        if self.seeing(TokenType.KEYWORD, "END") or self.seeing(TokenType.SEMI):
             print("Empty statement")
             return
 
     def statement_list(self):
         self.statement()
 
-        while self._current_token and (self._current_token.type_ == TokenType.SEMI):
+        while self.seeing(TokenType.SEMI):
             self.check_token(TokenType.SEMI)
             self.statement()
 
