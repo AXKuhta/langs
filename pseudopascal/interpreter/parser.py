@@ -68,7 +68,6 @@ class Parser:
 
     def statement(self):
         if self.seeing(TokenType.KEYWORD, "END") or self.seeing(TokenType.SEMI):
-            print("Empty statement")
             return
 
         if self.seeing(TokenType.KEYWORD, "BEGIN"):
