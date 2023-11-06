@@ -56,10 +56,19 @@ class Parser:
             result = BinOp(result, token, self.term())            
         return result
 
+    def assignment(self):
+        identifier = self._current_token.value
+        self.check_token(TokenType.IDENTIFIER)
+        self.check_token(TokenType.ASSIGN)
+        ex = self.expr()
+        print(identifier, "=", ex)
+
     def statement(self):
         if self.seeing(TokenType.KEYWORD, "END") or self.seeing(TokenType.SEMI):
             print("Empty statement")
             return
+
+        return self.assignment()
 
     def statement_list(self):
         self.statement()
