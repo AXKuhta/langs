@@ -96,6 +96,36 @@ class TestInterpreter:
 
         print( interpreter.eval(program) )
 
+    def test_whole_program(self, interpreter):
+        program =   """
+                    BEGIN
+                        y := 2;
+                        BEGIN
+                            a := 3;
+                            a := a;
+                            b := 10 + a + 10 * y / 4;
+                            c := a - b
+                        END;
+                        x := 11;
+                    END.
+                    """
+
+        y = 2
+        a = 3
+        a = a
+        b = 10 + a + 10 * y / 4
+        c = a - b
+        x = 11
+
+        interpreter.eval(program)
+        assert interpreter.variables == {
+            "y": y,
+            "a": a,
+            "b": b,
+            "c": c,
+            "x": x
+        }
+
     def test_undefined_variable(self, interpreter):
         with pytest.raises(NameError):
             interpreter.eval("BEGIN\nx := 5 + a\nEND.")
