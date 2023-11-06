@@ -48,10 +48,26 @@ class Parser:
             result = BinOp(result, token, self.term())            
         return result
 
+    def statement(self):
+        pass
+
+    def statement_list(self):
+        self.statement()
+
+        while self._current_token and (self._current_token.type_ == TokenType.SEMI):
+            self.check_token(TokenType.SEMI)
+            self.statement()
+
+    def complex_statement(self):
+        self.check_token(TokenType.KEYWORD)
+        self.statement_list()
+        self.check_token(TokenType.KEYWORD)
+
+    def program(self):
+        self.complex_statement()
+        self.check_token(TokenType.DOT)
+
     def parse(self, code):
         self._lexer.init(code)
         self._current_token = self._lexer.next()
-        while self._current_token:
-            print(self._current_token)
-            self._current_token = self._lexer.next()
-        return self.expr()
+        return self.program()
