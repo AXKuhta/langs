@@ -49,7 +49,11 @@ class Parser:
         return result
 
     def statement(self):
-        pass
+        # Empty
+        if ((self._current_token and (self._current_token.type_ == TokenType.KEYWORD) and (self._current_token.value == "END")) or
+            (self._current_token and (self._current_token.type_ == TokenType.SEMI))):
+            print("Empty statement")
+            return
 
     def statement_list(self):
         self.statement()
