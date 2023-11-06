@@ -19,7 +19,7 @@ class Parser:
         if self._current_token.type_ == type_:
             self._current_token = self._lexer.next()
         else:
-            raise SyntaxError("invalid token order")
+            raise SyntaxError(f"invalid token order, was expecting {type_} instead of {self._current_token}")
 
     def factor(self):
         token = self._current_token
