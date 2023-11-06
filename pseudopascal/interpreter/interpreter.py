@@ -1,12 +1,7 @@
 from .parser import Parser
 from .ast import *
 
-class NodeVisitor:
-    
-    def visit(self):
-        pass
-
-class Interpreter(NodeVisitor):
+class Interpreter():
     
     def __init__(self):
         self.parser = Parser()
@@ -28,9 +23,6 @@ class Interpreter(NodeVisitor):
         elif node is None:
             pass
 
-        else:
-            raise Exception(f"Internal AST traversal error: unknown node type: {node}")
-
     def visit_number(self, node):
         return float(node.token.value)
 
@@ -51,8 +43,6 @@ class Interpreter(NodeVisitor):
                 return self.visit(node.left) * self.visit(node.right)
             case "/":
                 return self.visit(node.left) / self.visit(node.right)
-            case _:
-                raise ValueError("Invalid operator")
 
     def visit_statementlist(self, node):
         for stmt in node.stmts:
