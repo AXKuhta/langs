@@ -7,6 +7,9 @@ class TokenType(Enum):
     EOL = auto()
     LPAREN = auto()
     RPAREN = auto()
+    IDENTIFIER = auto()
+    KEYWORD = auto()
+    DOT = auto()
 
 
 class Token:

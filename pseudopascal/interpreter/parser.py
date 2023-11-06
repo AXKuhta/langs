@@ -51,4 +51,7 @@ class Parser:
     def parse(self, code):
         self._lexer.init(code)
         self._current_token = self._lexer.next()
+        while self._current_token:
+            print(self._current_token)
+            self._current_token = self._lexer.next()
         return self.expr()

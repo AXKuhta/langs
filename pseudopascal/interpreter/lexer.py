@@ -33,6 +33,15 @@ class Lexer():
             self.forward()
         return "".join(result)
 
+    def identifier_or_keyword(self):
+        result = []
+        while (self._current_char is not None and
+                self._current_char.isalpha()):
+                result.append(self._current_char)
+                self.forward()
+
+        return "".join(result)
+
     def next(self):
         while self._current_char:
             if self._current_char.isspace():
@@ -52,5 +61,10 @@ class Lexer():
                 op = self._current_char
                 self.forward()
                 return Token(TokenType.RPAREN, op)
+            if self._current_char.isalpha():
+                return Token(TokenType.IDENTIFIER, self.identifier_or_keyword())
+            if self._current_char == ".":
+                self.forward()
+                return Token(TokenType.DOT, ".")
             
             raise SyntaxError("bad token")
