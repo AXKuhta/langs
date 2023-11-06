@@ -62,7 +62,12 @@ class Lexer():
                 self.forward()
                 return Token(TokenType.RPAREN, op)
             if self._current_char.isalpha():
-                return Token(TokenType.IDENTIFIER, self.identifier_or_keyword())
+                word = self.identifier_or_keyword()
+                keywords = ["BEGIN", "END"]
+                if word in keywords:
+                    return Token(TokenType.KEYWORD, word)
+                else:
+                    return Token(TokenType.IDENTIFIER, word)
             if self._current_char == ".":
                 self.forward()
                 return Token(TokenType.DOT, ".")
