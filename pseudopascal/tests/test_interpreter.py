@@ -108,6 +108,6 @@ class TestInterpreter:
         with pytest.raises(SyntaxError):
             interpreter.eval("BEGIN\nx := +*3\nEND.")
 
-    def test_invalid_factor_v2(self, interpreter):
+    def test_invalid_token_order(self, interpreter):
         with pytest.raises(SyntaxError):
-            interpreter.eval("BEGIN\nx := *3\nEND.")
+            interpreter.eval("BEGIN\nBEGIN\nEND.")
