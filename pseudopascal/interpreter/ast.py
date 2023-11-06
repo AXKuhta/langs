@@ -1,6 +1,9 @@
 from .token import Token
 
 class Node:
+    def __repr__(self):
+        return str(self)
+
     pass
 
 class Number(Node):
@@ -16,6 +19,14 @@ class Variable(Node):
 
     def __str__(self):
         return f"Variable ({self.token})"
+
+class Assignment(Node):
+    def __init__(self, lhs: Node, rhs: Node):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def __str__(self):
+        return f"Assignment({self.lhs}, {self.rhs})"
 
 class UnOp(Node):
     def __init__(self, op: Token, right: Node):
@@ -33,3 +44,4 @@ class BinOp(Node):
 
     def __str__(self):
         return f"BinOp{self.op.value} ({self.left}, {self.right})"
+

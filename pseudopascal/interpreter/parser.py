@@ -56,15 +56,14 @@ class Parser:
                 break
             token = self._current_token
             self.check_token(TokenType.OPERATOR)
-            result = BinOp(result, token, self.term())            
+            result = BinOp(result, token, self.term())          
         return result
 
     def assignment(self):
-        identifier = self._current_token.value
+        token = self._current_token
         self.check_token(TokenType.IDENTIFIER)
         self.check_token(TokenType.ASSIGN)
-        ex = self.expr()
-        print(identifier, "=", ex)
+        return Assignment(Variable(token), self.expr())
 
     def statement(self):
         if self.seeing(TokenType.KEYWORD, "END") or self.seeing(TokenType.SEMI):
@@ -74,11 +73,14 @@ class Parser:
         return self.assignment()
 
     def statement_list(self):
-        self.statement()
+        result = [self.statement()]
 
         while self.seeing(TokenType.SEMI):
             self.check_token(TokenType.SEMI)
-            self.statement()
+            stmt = self.statement()
+            result.append(stmt)
+
+        print(result)
 
     def complex_statement(self):
         self.check_token(TokenType.KEYWORD)
