@@ -1,7 +1,6 @@
-from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from interpreter import Interpreter
-import threading
 import json
+import zmq
 
 def handle_client(client):
 	# Protocol:
@@ -9,12 +8,7 @@ def handle_client(client):
 	# - Client sends program code
 
 	while True:
-		msglen = int.from_bytes( client.recv(4) )
-
-		if msglen == 0:
-			break
-
-		program = client.recv(msglen).decode()
+		program = client.recv().decode()
 
 		print("Program:", program)
 
@@ -22,35 +16,30 @@ def handle_client(client):
 
 		try:
 			state = interp.eval(program)
-			response = json.dumps(state).encode()
+			response = json.dumps(state)
 		except Exception as e:
-			response = json.dumps({"error": str(e)}).encode()
+			response = json.dumps({"error": str(e)})
 
-		client.send(len(response).to_bytes(4))
-		client.send(response)
-
-	print("Client disconnected")
-
-	client.close()
+		client.send(response.encode())
 
 def server(host, port):
-	with socket(AF_INET, SOCK_STREAM) as sock:
-		sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)	# Allow address reuse
-		#sock.setblocking(False)							# Non blocking mode, suffers from high CPU usage
-		sock.bind( (host, port) )
-		sock.listen(10)
+	context = zmq.Context()
+	socket = context.socket(zmq.REP)
+	socket.bind(f"tcp://{host}:{port}")
 
-		print(f"Server is up on {host}:{port}")
+	print(f"Server is up on {host}:{port}")
 
-		while True:
-			try:
-				client, addr = sock.accept()
-				print("Client connected:", *addr)
+	handle_client(socket)
 
-				thread = threading.Thread(target=handle_client, args=[client])
-				thread.start()
-
-			except BlockingIOError:
-				pass
+	"""
+	try:
+		client, addr = sock.accept()
+		print("Client connected:", *addr)
+		handle_client(client)
+		print("Client", *addr, "disconnected")
+		client.close()
+	except BlockingIOError:
+		pass
+	"""
 
 server("0.0.0.0", 8089)
