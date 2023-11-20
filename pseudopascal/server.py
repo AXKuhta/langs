@@ -1,26 +1,26 @@
 from interpreter import Interpreter
+from time import sleep
 import json
 import zmq
 
 def handle_client(client):
-	# Protocol:
-	# - Client sends program length
-	# - Client sends program code
-
 	while True:
-		program = client.recv().decode()
-
-		print("Program:", program)
-
-		interp = Interpreter()
-
 		try:
-			state = interp.eval(program)
-			response = json.dumps(state)
-		except Exception as e:
-			response = json.dumps({"error": str(e)})
+			program = client.recv(zmq.NOBLOCK).decode() # Nothing available -> an exception is raised
 
-		client.send(response.encode())
+			print("Program:", program)
+
+			interp = Interpreter()
+
+			try:
+				state = interp.eval(program)
+				response = json.dumps(state)
+			except Exception as e:
+				response = json.dumps({"error": str(e)})
+
+			client.send(response.encode())
+		except zmq.Again:
+			sleep(.05)
 
 def server(host, port):
 	context = zmq.Context()
