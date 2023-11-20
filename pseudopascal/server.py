@@ -1,5 +1,6 @@
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from interpreter import Interpreter
+import threading
 import json
 
 def handle_client(client):
@@ -28,6 +29,10 @@ def handle_client(client):
 		client.send(len(response).to_bytes(4))
 		client.send(response)
 
+	print("Client disconnected")
+
+	client.close()
+
 def server(host, port):
 	with socket(AF_INET, SOCK_STREAM) as sock:
 		sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)	# Allow address reuse
@@ -41,9 +46,10 @@ def server(host, port):
 			try:
 				client, addr = sock.accept()
 				print("Client connected:", *addr)
-				handle_client(client)
-				print("Client", *addr, "disconnected")
-				client.close()
+
+				thread = threading.Thread(target=handle_client, args=[client])
+				thread.start()
+
 			except BlockingIOError:
 				pass
 
