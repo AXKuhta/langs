@@ -1,4 +1,5 @@
 from lib import SpecialHashMap
+import pytest
 
 def test_iloc():
 	map = SpecialHashMap()
@@ -41,3 +42,27 @@ def test_ploc():
 	assert map.ploc[">=10, >0"] == {"10, 5": 300}
 
 	assert map.ploc["<5, >=5, >=3"] == {"1, 5, 3": 400}
+
+def test_invalid_op():
+	map = SpecialHashMap()
+
+	with pytest.raises(Exception):
+		map.ploc[">>>>1"]
+
+def test_missing_number_1():
+	map = SpecialHashMap()
+
+	with pytest.raises(Exception):
+		map.ploc[">"]
+
+def test_missing_number_2():
+	map = SpecialHashMap()
+
+	with pytest.raises(Exception):
+		map.ploc[">, >4"]
+
+def test_extraneous_number():
+	map = SpecialHashMap()
+
+	with pytest.raises(Exception):
+		map.ploc["555"]
