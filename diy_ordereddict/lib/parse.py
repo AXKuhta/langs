@@ -92,9 +92,6 @@ class Token:
 	def __init__(self):
 		self.value = ""
 
-	def __repr__(self):
-		return self.value
-
 class NumberToken(Token):
 	pass
 
