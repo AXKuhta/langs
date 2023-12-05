@@ -30,7 +30,7 @@ def parse_key(key):
 	return a_list
 
 # ">10, >20" =>
-# x_list = [gt, gt]
+# fn_list = [gt, gt]
 # b_list = [10, 20]
 def parse_query(query):
 	log = [SepToken()]
@@ -50,7 +50,7 @@ def parse_query(query):
 		else:
 			log_append(SepToken, letter)
 
-	x_list = []
+	fn_list = []
 	b_list = []
 
 	# Распрасить поток токенов
@@ -80,13 +80,13 @@ def parse_query(query):
 				"<=": le
 			}
 
-			x_list.append(str2op[token.value])
+			fn_list.append(str2op[token.value])
 			b_list.append(int(value.value))
 
 		elif type(token) is NumberToken:
 			raise Exception(f"Extraneous number: {token.value}")
 
-	return x_list, b_list
+	return fn_list, b_list
 
 class Token:
 	def __init__(self):
